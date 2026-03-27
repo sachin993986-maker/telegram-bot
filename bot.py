@@ -1,5 +1,6 @@
 import os
 import logging
+import asyncio
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from telegram import Update
 
@@ -33,6 +34,10 @@ def main():
         # Fallback to polling (not recommended for Render)
         application.run_polling()
         return
+
+    # Fix for Python 3.14: create and set an event loop
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
 
     # Set webhook and start the webhook server
     application.run_webhook(
